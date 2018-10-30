@@ -1,1 +1,1 @@
-web: /build/install/psykotlin/bin/psykotlin
+web: ./build/install/psykotlin/bin/psykotlin
