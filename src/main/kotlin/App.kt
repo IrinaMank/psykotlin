@@ -8,8 +8,9 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 class App {
     fun main(args: Array<String>) {
-
-        embeddedServer(Netty, 8080) {
+        val host = "0.0.0.0"
+        val port = System.getenv("PORT").toInt()
+        embeddedServer(Netty, port) {
             routing {
                 get("/") {
                     call.respondText("My Example Blog", ContentType.Text.Html)
