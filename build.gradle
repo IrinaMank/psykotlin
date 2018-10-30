@@ -1,8 +1,11 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.2.51'
-    id 'distribution'
 }
+
+apply plugin: 'application'
+
+mainClassName = 'io.ktor.server.netty.DevelopmentEngine'
 
 group 'com.mnp'
 version '1.0'
