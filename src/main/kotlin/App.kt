@@ -6,6 +6,8 @@ import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.gson.gson
+import io.ktor.http.ContentType
+import io.ktor.http.parseAndSortContentTypeHeader
 import io.ktor.request.receive
 import io.ktor.request.receiveMultipart
 import io.ktor.response.*
@@ -29,7 +31,7 @@ object Users: IntIdTable() {
     val password = varchar("password", 20)
     val firstName = varchar("firstName", 20)
     val lastName = varchar("lastName", 20)
-    val birthday = date("birthday")
+    //val birthday = date("birthday")
     val sex = bool("sex")
     val employment = varchar("employment", 30)
 }
@@ -41,7 +43,7 @@ class UserEntry(id: EntityID<Int>): IntEntity(id) {
     var password by Users.password
     var firstName by Users.firstName
     var lastName by Users.lastName
-    var birthday by Users.birthday
+    //var birthday by Users.birthday
     var sex by Users.sex
     var employment by Users.employment
 }
@@ -60,7 +62,7 @@ fun Application.main() {
     install(DefaultHeaders)
     install(ContentNegotiation) {
         gson {
-            setDateFormat(DateFormat.LONG)
+            setDateFormat(DateFormat.SHORT)
             setPrettyPrinting()
         }
     }
@@ -85,7 +87,7 @@ fun Application.main() {
                     it[password] = user.password
                     it[firstName] = user.firstName
                     it[lastName] = user.lastName
-                    it[birthday] = user.birthday
+                    //it[birthday] = user.birthday
                     it[sex] = user.sex
                     it[employment] = user.employment
 
