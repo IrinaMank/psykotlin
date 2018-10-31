@@ -26,7 +26,7 @@ class GuestbookEntry(id: EntityID<Int>): IntEntity(id) {
 }
 
 fun Application.main() {
-    Database.connect(System.getenv("DATABASE_URL"), driver = "org.postgresql.Driver")
+    Database.connect(System.getenv("JDBC_DATABASE_URL"), driver = "org.postgresql.Driver")
     transaction {
         create(GuestbookEntries)
         if(GuestbookEntry.count() == 0) {
