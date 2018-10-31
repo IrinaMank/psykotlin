@@ -4,6 +4,7 @@ import io.ktor.features.CallLogging
 import io.ktor.features.DefaultHeaders
 import io.ktor.response.*
 import io.ktor.routing.*
+import jdk.nashorn.tools.ShellFunctions.input
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
@@ -29,7 +30,7 @@ fun Application.main() {
     Database.connect(System.getenv("JDBC_DATABASE_URL"), driver = "org.postgresql.Driver")
     transaction {
         create(GuestbookEntries)
-        if(GuestbookEntry.count() == 0) {
+        if (GuestbookEntry.count() == 0) {
             GuestbookEntry.new {
                 text = "Thank you for stopping by!"
                 creation = DateTime.now()
@@ -40,8 +41,15 @@ fun Application.main() {
     install(CallLogging)
     install(Routing) {
         get("/") {
-            val text = "Howdy, Planet!"
-            call.respondText(text)
+            val entries = transaction { GuestbookEntry.all().toList() }
+            call.respondText {
+                var s = ""
+                for (i in entries) {
+                    s += " " + i.text
+                }
+                return@respondText s
+            }
+
         }
     }
 }
