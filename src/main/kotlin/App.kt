@@ -1,10 +1,12 @@
 
+import com.google.gson.GsonBuilder
 import io.ktor.application.*
 import io.ktor.content.PartData
 import io.ktor.content.readAllParts
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
+import io.ktor.gson.GsonConverter
 import io.ktor.gson.gson
 import io.ktor.http.ContentType
 import io.ktor.http.parseAndSortContentTypeHeader
@@ -31,7 +33,7 @@ object Users: IntIdTable() {
     val password = varchar("password", 20)
     val firstName = varchar("firstName", 20)
     val lastName = varchar("lastName", 20)
-    //val birthday = date("birthday")
+    val age = integer("age")
     val sex = bool("sex")
     val employment = varchar("employment", 30)
 }
@@ -43,7 +45,7 @@ class UserEntry(id: EntityID<Int>): IntEntity(id) {
     var password by Users.password
     var firstName by Users.firstName
     var lastName by Users.lastName
-    //var birthday by Users.birthday
+    var age by Users.age
     var sex by Users.sex
     var employment by Users.employment
 }
@@ -61,10 +63,9 @@ fun Application.main() {
     }
     install(DefaultHeaders)
     install(ContentNegotiation) {
-        gson {
-            setDateFormat(DateFormat.SHORT)
-            setPrettyPrinting()
-        }
+        register(ContentType.Application.Json, GsonConverter(GsonBuilder().apply {
+            // ...
+        }.create()))
     }
     install(CallLogging)
     install(Routing) {
@@ -87,7 +88,7 @@ fun Application.main() {
                     it[password] = user.password
                     it[firstName] = user.firstName
                     it[lastName] = user.lastName
-                    //it[birthday] = user.birthday
+                    it[age] = user.age
                     it[sex] = user.sex
                     it[employment] = user.employment
 
