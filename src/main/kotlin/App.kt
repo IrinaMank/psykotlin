@@ -81,18 +81,21 @@ fun Application.main() {
 
         }
         post("/register") {
-            val user = call.receive<UserEntry>()
-            transaction {
-                Users.insert {
-                    it[login] = user.login
-                    it[password] = user.password
-                    it[firstName] = user.firstName
-                    it[lastName] = user.lastName
-                    it[age] = user.age
-                    it[sex] = user.sex
-                    it[employment] = user.employment
+            try {val user = call.receive<UserEntry>()
+                transaction {
+                    Users.insert {
+                        it[login] = user.login
+                        it[password] = user.password
+                        it[firstName] = user.firstName
+                        it[lastName] = user.lastName
+                        it[age] = user.age
+                        it[sex] = user.sex
+                        it[employment] = user.employment
+                    }
+                }}
+            catch (e: Exception) {
+                call.respondText { e.message.toString() }
+            }
 
-                }
-        }
     }}
 }
