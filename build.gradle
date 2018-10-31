@@ -32,6 +32,7 @@ dependencies {
     // DB
     compile 'org.jetbrains.exposed:exposed:0.10.4'
     compile 'org.postgresql:postgresql:42.2.4.jre7'
+    compile("io.ktor:ktor-gson:0.9.1")
 }
 
 compileKotlin {
